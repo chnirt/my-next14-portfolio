@@ -11,17 +11,17 @@ import {
   PinterestSvg,
   TwitterSvg,
 } from "@/components/static-svg";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { ExternalLink, Menu } from "lucide-react";
-import Link from "next/link";
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import developerProfile from "../../public/images/profile/developer.png";
-import Image from "next/image";
+import { motion } from "framer-motion";
+import { ExternalLink } from "lucide-react";
 import { useTheme } from "next-themes";
 import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+import developerProfile from "../../public/images/profile/developer.png";
 
 const links = [
   {
@@ -46,32 +46,39 @@ const socialMediaLinks = [
   {
     href: "https://twitter.com/",
     icon: <TwitterSvg className="h-auto w-6" />,
+    ariaLabel: "Twitter",
   },
   {
     href: "https://github.com/",
     icon: <GithubSvg className="h-auto w-6" />,
+    ariaLabel: "Github",
   },
   {
     href: "https://www.linkedin.com",
     icon: <LinkedInSvg className="h-auto w-6" />,
+    ariaLabel: "LinkedIn",
   },
   {
     href: "https://medium.com/",
     icon: <MediumSvg className="h-auto w-6" />,
+    ariaLabel: "Medium",
   },
   {
     href: "https://www.pinterest.com",
     icon: <PinterestSvg className="h-auto w-6" />,
+    ariaLabel: "Pinterest",
   },
   {
     href: "https://dribbble.com/",
     icon: <DribbbleSvg className="h-auto w-6" />,
+    ariaLabel: "Dribbble",
   },
 ];
 
 function HamburgerMenu() {
-  const [open, setOpen] = useState(!false);
+  const [open, setOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
 
   return (
     <div>
@@ -110,14 +117,20 @@ function HamburgerMenu() {
                 className="dark:text-dark text-light group items-center transition duration-300"
                 key={["link", mi].join("-")}
               >
-                <Link href={link.href}>
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push(link.href);
+                    setOpen(false);
+                  }}
+                >
                   {link.text}
                   <span
                     className={cn(
                       "dark:bg-dark bg-light block h-0.5 max-w-0 transition-all duration-500 group-hover:max-w-full",
                     )}
                   ></span>
-                </Link>
+                </a>
               </div>
             ))}
           </div>
@@ -128,7 +141,11 @@ function HamburgerMenu() {
                 key={["social-media-link", li].join("-")}
                 whileHover={{ y: -2 }}
               >
-                <Link href={link.href} target="_blank">
+                <Link
+                  href={link.href}
+                  target="_blank"
+                  aria-label={link.ariaLabel}
+                >
                   {link.icon}
                 </Link>
               </motion.span>
@@ -137,6 +154,7 @@ function HamburgerMenu() {
             <button
               className="bg-dark dark:bg-light flex h-auto w-6 items-center justify-center rounded-full"
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+              aria-label="hamburger button"
             >
               {theme === "light" ? (
                 <LineMdSunnyFilledLoopToMoonAltFilledLoopTransition className="dark:text-dark text-light" />
@@ -148,22 +166,6 @@ function HamburgerMenu() {
         </div>
       </div>
     </div>
-  );
-  return (
-    <Sheet>
-      <SheetTrigger>
-        <Menu className="h-4 w-4" />
-      </SheetTrigger>
-      <SheetContent closeButtonClassName="left-4 right-auto focus:ring-0 focus:ring-offset-0">
-        <div className="flex h-full flex-col justify-center gap-4">
-          {links.map((link, mi) => (
-            <Button key={["side", "link", mi].join("-")} variant={"link"}>
-              {link.text}
-            </Button>
-          ))}
-        </div>
-      </SheetContent>
-    </Sheet>
   );
 }
 
@@ -213,7 +215,11 @@ export function Navbar() {
                 key={["social-media-link", li].join("-")}
                 whileHover={{ y: -2 }}
               >
-                <Link href={link.href} target="_blank">
+                <Link
+                  href={link.href}
+                  target="_blank"
+                  aria-label={link.ariaLabel}
+                >
                   {link.icon}
                 </Link>
               </motion.span>
@@ -280,13 +286,8 @@ function HireMe() {
 export default function Home() {
   return (
     <>
-      <Head>
-        <title>Chin Trinh: Home page</title>
-        <meta name="description" content="content" />
-      </Head>
-
-      <main className="flex min-h-screen w-full items-center">
-        <div className="flex w-full flex-col items-center justify-between p-8 sm:flex-col sm:p-8 md:flex-row md:p-12 lg:flex-row lg:p-16 xl:p-32">
+      <main className="flex items-center">
+        <div className="flex flex-col items-center justify-between p-8 sm:flex-col sm:p-8 md:flex-row md:p-12 lg:flex-row lg:p-16 xl:p-32">
           <div className="flex w-full sm:hidden sm:w-full md:flex md:w-full lg:flex 2xl:w-1/2">
             <Image
               className="h-auto w-full"
