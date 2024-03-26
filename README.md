@@ -34,3 +34,14 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Recommend
+
+- [Semantic HTML5](https://www.semrush.com/blog/semantic-html5-guide/)
+- [Social media icons](https://icons8.com/icon/set/github/family-windows)
+- [Framer motion](https://salehmubashar.com/blog/5-cool-animations-in-react-with-framer-motion)
+- [Animated Svg](https://iconify.design/)
+- [Prompt: a developer wearing glasses, acrylic art, avatar profile, white background](bing.com/images/create)
+- [Avatar](https://iconscout.com/3d-illustration-pack/lifestyle-avatars)
+- [Enhance image](https://www.upscale.media/upload)
+- [Clone from this project](https://minimal-nextjs-portfolio-website.vercel.app/)
