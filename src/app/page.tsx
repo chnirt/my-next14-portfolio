@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  CircleTextSvg,
   DribbbleSvg,
   GithubSvg,
   LineMdMoonFilledToSunnyFilledLoopTransition,
@@ -19,6 +20,8 @@ import { cn } from "@/lib/utils";
 import developerProfile from "../../public/images/profile/developer.png";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import Head from "next/head";
+import { useState } from "react";
 
 const links = [
   {
@@ -66,7 +69,86 @@ const socialMediaLinks = [
   },
 ];
 
-function SideBar() {
+function HamburgerMenu() {
+  const [open, setOpen] = useState(!false);
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <div>
+      <button onClick={() => setOpen((prevState) => !prevState)}>
+        <div className="space-y-1">
+          <div
+            className={cn("bg-dark dark:bg-light h-0.5 w-6 transition-all", {
+              "translate-y-1.5 rotate-45": open,
+            })}
+          ></div>
+          <div
+            className={cn("bg-dark dark:bg-light h-0.5 w-6 transition-all", {
+              "opacity-0": open,
+            })}
+          ></div>
+          <div
+            className={cn("bg-dark dark:bg-light h-0.5 w-6 transition-all", {
+              "-translate-y-1.5 -rotate-45": open,
+            })}
+          ></div>
+        </div>
+      </button>
+
+      <div
+        className={cn(
+          "fixed left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 transition-all",
+          {
+            flex: open,
+          },
+        )}
+      >
+        <div className="dark:bg-light/40 bg-dark/40 flex flex-col items-center justify-between gap-4 rounded-lg p-16 opacity-100 backdrop-blur-sm">
+          <div>
+            {links.map((link, mi) => (
+              <div
+                className="dark:text-dark text-light group items-center transition duration-300"
+                key={["link", mi].join("-")}
+              >
+                <Link href={link.href}>
+                  {link.text}
+                  <span
+                    className={cn(
+                      "dark:bg-dark bg-light block h-0.5 max-w-0 transition-all duration-500 group-hover:max-w-full",
+                    )}
+                  ></span>
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex gap-2">
+            {socialMediaLinks.map((link, li) => (
+              <motion.span
+                key={["social-media-link", li].join("-")}
+                whileHover={{ y: -2 }}
+              >
+                <Link href={link.href} target="_blank">
+                  {link.icon}
+                </Link>
+              </motion.span>
+            ))}
+
+            <button
+              className="bg-dark dark:bg-light flex h-auto w-6 items-center justify-center rounded-full"
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            >
+              {theme === "light" ? (
+                <LineMdSunnyFilledLoopToMoonAltFilledLoopTransition className="dark:text-dark text-light" />
+              ) : (
+                <LineMdMoonFilledToSunnyFilledLoopTransition className="dark:text-dark text-light" />
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
   return (
     <Sheet>
       <SheetTrigger>
@@ -85,7 +167,7 @@ function SideBar() {
   );
 }
 
-function Navbar() {
+export function Navbar() {
   const { theme, setTheme } = useTheme();
 
   return (
@@ -102,7 +184,7 @@ function Navbar() {
                   {link.text}
                   <span
                     className={cn(
-                      "block h-0.5 max-w-0 bg-black transition-all duration-500 group-hover:max-w-full dark:bg-white",
+                      "bg-dark dark:bg-light block h-0.5 max-w-0 transition-all duration-500 group-hover:max-w-full",
                     )}
                   ></span>
                 </Link>
@@ -111,17 +193,17 @@ function Navbar() {
           </div>
 
           <div className="md:hidden">
-            <SideBar />
+            <HamburgerMenu />
           </div>
 
-          <div className="sm:absolute sm:left-[50%] sm:translate-x-[-50%]">
-            <div className="absolute left-0 top-0 h-16 w-16 rounded-full hover:animate-ping hover:bg-black dark:hover:bg-white"></div>
-            <div className="w16 absolute left-0 top-0 h-16 rounded-full hover:animate-pulse hover:bg-black dark:hover:bg-white"></div>
+          <div className="absolute left-[50%] translate-x-[-50%]">
+            <div className="hover:bg-dark dark:hover:bg-light absolute left-0 top-0 h-16 w-16 rounded-full hover:animate-ping"></div>
+            <div className="w16 hover:bg-dark dark:hover:bg-light absolute left-0 top-0 h-16 rounded-full hover:animate-pulse"></div>
             <Link
               href="/"
-              className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-black bg-black dark:border-white"
+              className="border-dark bg-dark dark:border-light flex h-16 w-16 items-center justify-center rounded-full border-2"
             >
-              <span className="text-2xl font-semibold text-white">CT</span>
+              <span className="text-light text-2xl font-semibold">CT</span>
             </Link>
           </div>
 
@@ -138,15 +220,19 @@ function Navbar() {
             ))}
 
             <button
-              className="flex h-auto w-6 items-center justify-center rounded-full bg-black dark:bg-white"
+              className="bg-dark dark:bg-light flex h-auto w-6 items-center justify-center rounded-full"
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
             >
               {theme === "light" ? (
-                <LineMdSunnyFilledLoopToMoonAltFilledLoopTransition className="text-white dark:text-black" />
+                <LineMdSunnyFilledLoopToMoonAltFilledLoopTransition className="dark:text-dark text-light" />
               ) : (
-                <LineMdMoonFilledToSunnyFilledLoopTransition className="text-white dark:text-black" />
+                <LineMdMoonFilledToSunnyFilledLoopTransition className="dark:text-dark text-light" />
               )}
             </button>
+          </div>
+
+          <div className="md:hidden">
+            <HireMe />
           </div>
         </div>
       </div>
@@ -174,12 +260,30 @@ function AnimatedText({ text }: { text: string }) {
   ));
 }
 
+function HireMe() {
+  return (
+    <div className="relative">
+      <div className="h-24 w-24 md:h-32 md:w-32">
+        <CircleTextSvg className="animate-spin-slow dark:fill-light h-auto w-full" />
+      </div>
+      <div className="bg-dark dark:bg-light absolute right-1/4 top-1/4 flex h-12 w-12 items-center justify-center  rounded-full md:h-16 md:w-16">
+        <Link href={"mailto:trinhchinchin@gmail.com"}>
+          <span className="text-light dark:text-dark text-center text-xs font-semibold md:text-sm">
+            Hire Me
+          </span>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   return (
-    <div>
-      <header>
-        <Navbar />
-      </header>
+    <>
+      <Head>
+        <title>Chin Trinh: Home page</title>
+        <meta name="description" content="content" />
+      </Head>
 
       <main className="flex min-h-screen w-full items-center">
         <div className="flex w-full flex-col items-center justify-between p-8 sm:flex-col sm:p-8 md:flex-row md:p-12 lg:flex-row lg:p-16 xl:p-32">
@@ -188,6 +292,7 @@ export default function Home() {
               className="h-auto w-full"
               src={developerProfile}
               alt={"Chnirt"}
+              priority={true}
             />
           </div>
 
@@ -207,7 +312,7 @@ export default function Home() {
 
             <div className="flex items-center gap-4">
               <Link
-                className="flex items-center justify-center gap-2 rounded-xl bg-black px-4 py-2 text-lg font-semibold text-white dark:bg-white dark:text-black"
+                className="bg-dark hover:bg-light hover:border-dark dark:text-dark hover:text-dark hover:ring-dark hover:dark:bg-dark hover:dark:ring-light hover:dark:text-light text-light dark:bg-light flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-lg font-semibold transition-all hover:ring"
                 href={"/dummy.pdf"}
                 target="_blank"
                 download={true}
@@ -220,7 +325,7 @@ export default function Home() {
                 href={"mailto:trinhchinchin@gmail.com"}
               >
                 Contact
-                <span className="block h-0.5 max-w-full bg-black dark:bg-white" />
+                <span className="bg-dark dark:bg-light block h-0.5 max-w-full" />
               </Link>
             </div>
           </div>
@@ -228,6 +333,10 @@ export default function Home() {
       </main>
 
       <footer></footer>
-    </div>
+
+      <div className="bottom-4 left-4 hidden md:fixed md:flex xl:fixed xl:flex 2xl:fixed 2xl:flex">
+        <HireMe />
+      </div>
+    </>
   );
 }

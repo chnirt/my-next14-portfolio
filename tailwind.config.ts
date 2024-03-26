@@ -52,6 +52,8 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        dark: "#1B1B1B",
+        light: "#F5F5F5",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -71,6 +73,7 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "spin-slow": "spin 5s linear infinite",
       },
     },
   },
